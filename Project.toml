@@ -1,0 +1,9 @@
+name = "BinaryClassificationTools"
+uuid = "cd7c4aec-4cd0-11ea-3b51-c118b6b3c364"
+author = ["Daniel Hopp <daniel.hopp1@gmail.com>"]
+version = "0.0.0"
+
+[deps]
+
+[compat]
+julia = "≥ 1.0.0"
