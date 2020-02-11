@@ -1,21 +1,19 @@
-using Plots
+using DataFrames, Plots
 
 export plot_auc
 
-function calc_auc(xs::Array, ys::Array)
-    sorted = sort([(i, j) for (i, j) in zip(xs, 1:length(xs))])
-    index = [j for (i, j) in sorted]
-    sorted_x = [i for (i, j) in sorted]
-    sorted_y = ys[index]
+function calc_auc2(x, y)
+    df = names!(hcat(x, y) |> DataFrame, Symbol.(["x", "y"]))
+    df = sort(df, [:x, :y])
     auc = 0
-    for i = 2:length(sorted_x)
+    for i in 2:nrow(df)
         # rectangular component
-        x = sorted_x[i] - sorted_x[i-1]
-        y = sorted_y[i-1]
-        auc += x * y
+        x = df[i, :x][1] - df[i-1, :x][1]
+        y = df[i-1, :y][1]
+        auc += x*y
         # triangular component
-        height = sorted_y[i] - y
-        auc += 0.5 * x * height
+        height = df[i, :y][1] - y
+        auc += 0.5*x * height
     end
     return auc
 end
