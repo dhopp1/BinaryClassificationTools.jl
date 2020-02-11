@@ -2,7 +2,7 @@ using DataFrames, Plots
 
 export plot_auc
 
-function calc_auc2(x, y)
+function calc_auc(x, y)
     df = names!(hcat(x, y) |> DataFrame, Symbol.(["x", "y"]))
     df = sort(df, [:x, :y])
     auc = 0
