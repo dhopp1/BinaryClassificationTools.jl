@@ -24,5 +24,5 @@ Most should be self explanatory, if not `?func_name` provides necessary informat
 - `best_f1_search`: given an array of predicted probabilities, find best threshold for classification based on F1 score
 
 ### ROC and AUC
-- `calc_auc`: calculates the integral of a function given arrays of its Xs and Ys using Rieman sums
+- `calc_auc`: calculates the integral of a function given arrays of its Xs and Ys using Riemann sums
 - `roc_curve`: plots the [ROC](https://en.wikipedia.org/wiki/Receiver_operating_characteristic) curve and displays the [AUC](https://en.wikipedia.org/wiki/Receiver_operating_characteristic#Area_under_the_curve)
