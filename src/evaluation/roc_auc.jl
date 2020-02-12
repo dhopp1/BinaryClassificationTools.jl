@@ -6,7 +6,7 @@ export roc_curve
 
 "calc the AUC of a function given xs and ys"
 function calc_auc(x::Array, y::Array)
-    df = names!(hcat(x, y) |> DataFrame, Symbol.(["x", "y"]))
+    df = rename!(hcat(x, y) |> DataFrame, Symbol.(["x", "y"]))
     df = sort(df, [:x, :y])
     auc = 0
     for i in 2:nrow(df)
