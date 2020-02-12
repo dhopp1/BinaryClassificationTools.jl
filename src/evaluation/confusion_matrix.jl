@@ -1,3 +1,7 @@
+export true_positives
+export true_negatives
+export false_positives
+export false_negatives
 export confusion_matrix
 
 "true positives. If rate: sensitivity (true positives / actual positives)"
