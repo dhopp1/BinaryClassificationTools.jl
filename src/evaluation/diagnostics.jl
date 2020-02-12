@@ -43,7 +43,7 @@ function recall(actual::Array{Int64,1}, pred::Array{Int64,1})
 end
 
 "proportion of classifications made correctly"
-accuracy(actual::Array{Int64,1}, pred::Array{Int64,1}) = sum(actual .== pred)
+accuracy(actual::Array{Int64,1}, pred::Array{Int64,1}) = sum(actual .== pred) / length(actual)
 
 "F1 score, harmonic mean of precision and recall, 2 * ((precision * recall) / (precision + recall))"
 function f1_score(actual::Array{Int64,1}, pred::Array{Int64,1})
