@@ -1,5 +1,21 @@
 export confusion_matrix
 
+"true positives. If rate: sensitivity (true positives / actual positives)"
+true_positives(actual::Array{Int64,1}, pred::Array{Int64,1}; rate = false) =
+    sum(actual .== pred .== 1) / (rate ? sum(actual .== 1) : 1)
+
+"true negatives. If rate: specificity (true negatives / actual negatives)"
+true_negatives(actual::Array{Int64,1}, pred::Array{Int64,1}; rate = false) =
+    sum(actual .== pred .== 0) / (rate ? sum(actual .== 1) : 1)
+
+"false positives. If rate: fall-out (false positives / actual negatives)"
+false_positives(actual::Array{Int64,1}, pred::Array{Int64,1}; rate = false) =
+    sum((actual .== 0) .& (pred .== 1)) / (rate ? sum(actual .== 0) : 1)
+
+"true negatives. If rate: (false negatives / actual positives)"
+false_negatives(actual::Array{Int64,1}, pred::Array{Int64,1}; rate = false) =
+    sum((actual .== 1) .& (pred .== 0)) / (rate ? sum(actual .== 1) : 1)
+
 """
 _given array of 1s and 0s, actuals and predictions, returns confusion matrix_
 
@@ -11,7 +27,7 @@ _given array of 1s and 0s, actuals and predictions, returns confusion matrix_
     ratio : Boolean
         if true, return matrix as ratios, sum = 1, else return absolute numbers
 
-#### returns: Array{Int64,2}
+#### returns: Array{Float64,2}
     confusion matrix of form:
     [tp fp]
     [fn tn]
@@ -20,19 +36,11 @@ _given array of 1s and 0s, actuals and predictions, returns confusion matrix_
 """
 function confusion_matrix(
     actual::Array{Int64,1},
-    prediction::Array{Int64,1};
+    pred::Array{Int64,1};
     ratio = false,
 )
-    true_positives = sum(actual .== prediction .== 1)
-    true_negatives = sum(actual .== prediction .== 0)
-    false_positives = sum((actual .== 0) .& (prediction .== 1))
-    false_negatives = sum((actual .== 1) .& (prediction .== 0))
-    if ratio
-        return [
-            true_positives false_positives
-            false_negatives true_negatives
-        ] ./ length(actual) |> x -> round.(x, digits = 3)
-    else
-        return [true_positives false_positives; false_negatives true_negatives]
-    end
+    [
+     true_positives(actual, pred) false_positives(actual, pred)
+     false_negatives(actual, pred) true_negatives(actual, pred)
+    ] ./ (ratio ? (length(actual) |> x -> round.(x, digits = 3)) : 1)
 end
