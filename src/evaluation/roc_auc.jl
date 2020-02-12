@@ -2,7 +2,7 @@ include("diagnostics.jl")
 using DataFrames, Plots
 
 export calc_auc
-export plot_auc
+export roc_curve
 
 "calc the AUC of a function given xs and ys"
 function calc_auc(x::Array, y::Array)
