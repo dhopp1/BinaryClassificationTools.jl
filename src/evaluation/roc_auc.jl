@@ -1,3 +1,4 @@
+include("diagnostics.jl")
 using DataFrames, Plots
 
 export plot_auc

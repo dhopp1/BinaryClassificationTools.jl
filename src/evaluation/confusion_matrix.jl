@@ -1,24 +1,6 @@
-export true_positives
-export true_negatives
-export false_positives
-export false_negatives
+include("diagnostics.jl")
+
 export confusion_matrix
-
-"true positives. If rate: sensitivity (true positives / actual positives)"
-true_positives(actual::Array{Int64,1}, pred::Array{Int64,1}; rate = false) =
-    sum(actual .== pred .== 1) / (rate ? sum(actual .== 1) : 1)
-
-"true negatives. If rate: specificity (true negatives / actual negatives)"
-true_negatives(actual::Array{Int64,1}, pred::Array{Int64,1}; rate = false) =
-    sum(actual .== pred .== 0) / (rate ? sum(actual .== 1) : 1)
-
-"false positives. If rate: fall-out (false positives / actual negatives)"
-false_positives(actual::Array{Int64,1}, pred::Array{Int64,1}; rate = false) =
-    sum((actual .== 0) .& (pred .== 1)) / (rate ? sum(actual .== 0) : 1)
-
-"true negatives. If rate: (false negatives / actual positives)"
-false_negatives(actual::Array{Int64,1}, pred::Array{Int64,1}; rate = false) =
-    sum((actual .== 1) .& (pred .== 0)) / (rate ? sum(actual .== 1) : 1)
 
 """
 _given array of 1s and 0s, actuals and predictions, returns confusion matrix_
