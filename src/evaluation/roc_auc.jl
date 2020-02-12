@@ -42,7 +42,7 @@ _given array of predictions (0 ≤ x ≤ 1] and array of actuals, return ROC AUC
 #### returns: Plots.Plot{Plots.GRBackend}
     plot of ROC AUC
 """
-function plot_auc(actual::Array{Int}, pred::Array{Float64})
+function roc_curve(actual::Array{Int}, pred::Array{Float64})
     # diagonal line
     p1 = plot(
         [0, 1],
