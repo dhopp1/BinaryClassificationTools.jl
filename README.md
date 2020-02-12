@@ -1,6 +1,13 @@
 # BinaryClassificationTools
 Collection of useful tools for binary classification problems (F1 score, etc.). Most functions operate on the assumption of an array of Ints of 1s and 0s for actuals, and an array of floats [0,1] for predictions.
 
+### Installation
+```
+using Pkg
+Pkg.add(PackageSpec(url="https://github.com/dhopp1/BinaryClassificationTools.jl"))
+using BinaryClassificationTools
+```
+
 ### Diagnostic functions
 Most should be self explanatory, if not `?func_name` provides necessary information.
 
