@@ -9,6 +9,7 @@ export recall
 export accuracy
 export f1_score
 export confusion_matrix
+export predict_from_threshold
 export best_f1_search
 
 "true positives. If rate: sensitivity (true positives / actual positives)"
@@ -80,6 +81,9 @@ function confusion_matrix(
     ] ./ (ratio ? (length(actual) |> x -> round.(x, digits = 3)) : 1)
 end
 
+"given an array of predicted probabilities, return 1 or 0 depending on threshold"
+predict_from_threshold(pred::Array{Float64}, threshold::Float64) = [perc > threshold ? 1 : 0 for perc in pred]
+
 """
 _given array of true labels and % predictions, return best threshold and F1 score, plot of F1 score a>_
 
@@ -93,10 +97,9 @@ _given array of true labels and % predictions, return best threshold and F1 scor
     tuple of best threshold, best F1 score, plot of F1 scores
 """
 function best_f1_search(actual::Array{Int}, pred::Array{Float64})
-    predict(pred, threshold) = [perc > threshold ? 1 : 0 for perc in pred]
     x = 0:0.01:1
-    accuracies = [sum(predict(pred, i) .== actual) / length(actual) for i in x]
-    f1s = [f1_score(actual, predict(pred_perc, i)) for i in x]
+    accuracies = [sum(predict_from_threshold(pred, i) .== actual) / length(actual) for i in x]
+    f1s = [f1_score(actual, predict_from_threshold(pred_perc, i)) for i in x]
 
     p1 = plot(
         x,

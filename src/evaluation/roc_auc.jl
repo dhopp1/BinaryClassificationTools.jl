@@ -1,9 +1,11 @@
 include("diagnostics.jl")
 using DataFrames, Plots
 
+export calc_auc
 export plot_auc
 
-function calc_auc(x, y)
+"calc the AUC of a function given xs and ys"
+function calc_auc(x::Array, y::Array)
     df = names!(hcat(x, y) |> DataFrame, Symbol.(["x", "y"]))
     df = sort(df, [:x, :y])
     auc = 0
@@ -19,39 +21,11 @@ function calc_auc(x, y)
     return auc
 end
 
-prediction(probability_positive::Array{Float64}, threshold::Float64) = [x > threshold ? 1 : 0 for x in probability_positive]
-
-"""
-returns true positive and false positive rates given arrays of actuals and predictions
-"""
-function tp_fp(actual::Array{Int64}, pred::Array{Int64})
-    tpr = sum([if pred[i] == 1 && actual[i] == 1
-        1
-    else
-        0
-    end for i in collect(range(1, stop = length(pred)))]) / sum(actual)
-    fp = sum([if pred[i] == 1 && actual[i] == 0
-        1
-    else
-        0
-    end for i in collect(range(1, stop = length(pred)))])
-    tn = sum([if pred[i] == 0 && actual[i] == 0
-        1
-    else
-        0
-    end for i in collect(range(1, stop = length(pred)))])
-    fpr = fp / (fp + tn)
-    return tpr, fpr
-end
-
-function roc_data(actual::Array{Int64}, probability_positive::Array{Float64}, step = 0.01)
-    tps = []
-    fps = []
-    for i in range(0, 1, step = step)
-        tp, fp = tp_fp(actual, prediction(probability_positive, i))
-        push!(tps, tp)
-        push!(fps, fp)
-    end
+"generates data necssary for ROC curve, array of true positive and false positive rates + AUC"
+function roc_data(actual::Array{Int64}, pred::Array{Float64}, step = 0.01)
+    x = 0:step:1
+    tps = [true_positives(actual, predict_from_threshold(pred, i), rate=true) for i in x]
+    fps = [false_positives(actual, predict_from_threshold(pred, i), rate=true) for i in x]
     auc = calc_auc(fps, tps)
     return tps, fps, auc
 end
