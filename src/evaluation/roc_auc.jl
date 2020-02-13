@@ -24,8 +24,8 @@ end
 "generates data necssary for ROC curve, array of true positive and false positive rates + AUC"
 function roc_data(actual::Array{Int64}, pred::Array{Float64}, step = 0.01)
     x = 0:step:1
-    tps = [true_positives(actual, predict_from_threshold(pred, i), rate=true) for i in x]
-    fps = [false_positives(actual, predict_from_threshold(pred, i), rate=true) for i in x]
+    tps = [true_positives(actual, predict_from_threshold(pred, threshold), rate=true) for threshold in x]
+    fps = [false_positives(actual, predict_from_threshold(pred, threshold), rate=true) for threshold in x]
     auc = calc_auc(fps, tps)
     return tps, fps, auc
 end
