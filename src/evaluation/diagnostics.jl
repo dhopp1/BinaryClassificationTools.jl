@@ -98,8 +98,8 @@ _given array of true labels and % predictions, return best threshold and F1 scor
 """
 function best_f1_search(actual::Array{Int}, pred::Array{Float64})
     x = 0:0.01:1
-    accuracies = [sum(predict_from_threshold(pred, i) .== actual) / length(actual) for i in x]
-    f1s = [f1_score(actual, predict_from_threshold(pred, i)) for i in x]
+    accuracies = [sum(predict_from_threshold(pred, threshold) .== actual) / length(actual) for threshold in x]
+    f1s = [f1_score(actual, predict_from_threshold(pred, threshold)) for threshold in x]
 
     p1 = plot(
         x,
@@ -113,6 +113,6 @@ function best_f1_search(actual::Array{Int}, pred::Array{Float64})
     )
     plot!(x, f1s, label = "F1")
 
-    best_f1, best_threshold_index = findmax([isnan(i) ? 0 : i for i in f1s])
+    best_f1, best_threshold_index = findmax([isnan(f1) ? 0 : f1 for f1 in f1s])
     return x[best_threshold_index], best_f1, p1
 end
