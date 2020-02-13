@@ -10,6 +10,8 @@ roc_data_output = roc_data(data_actual, data_proba)
     @test round(sum(roc_data_output[1]), digits=4) == 63.3333
     @test sum(roc_data_output[2]) == 38.8
 
+    @test calc_auc([1,2,3], [1,2,3]) == 4.0
+    @test calc_auc([1,3,2], [1,3,2]) == 4.0
     @test round(calc_auc(roc_data_output[2], roc_data_output[1]), digits=4) == 0.7667
 
     @test !isa(try roc_curve(data_actual, data_proba) catch ex ex end, Exception)
